@@ -390,27 +390,7 @@ function Parallax(options) {
 			glCtx = initWebGL();
 		}
 
-		if (glCtx) {
-			/*var element = $('html');
-			var observer = new MutationObserver(function (mutations) {
-				mutations.forEach(function(mutation) {
-					if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-						var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-						var fade = element.hasClass('parallax-items-show') &&
-							!element.hasClass('hide-scroll-items') &&
-							!(element.hasClass('nav-open') && width <= 768);
-
-						glCtx.fadeItems(fade);
-					}
-				});
-			});
-
-			observer.observe(element[0], {
-				attributes: true,
-				attributeFilter: ['class'],
-			});*/
-		}
-		else {
+		if (!glCtx) {
 			layers.forEach(function (layer, i) {
 				var image = loadedImages[i];
 				var element = layer.element;
