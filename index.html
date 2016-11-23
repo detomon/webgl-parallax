@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebGL Parallax</title>
+	<link href="parallax.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+		.parallax-container {
+			height: 500px;
+		}
+
+		.fake-layer {
+			width: 2em;
+			height: 2em;
+			position: relative;
+			background: red;
+		}
+	</style>
+</head>
+<body>
+
+<div class="parallax-container" data-alignment="0.0, 0.0">
+	<div class="parallax-layer" data-image="img/background.jpg" data-shift="-0.030, -0.030"></div>
+	<div class="parallax-layer" data-image="img/layer5.png" data-shift="-0.015, -0.015"></div>
+	<div class="parallax-layer" data-image="img/layer4.png" data-shift="+0.003, +0.003"></div>
+	<div class="parallax-layer" data-image="img/layer3.png" data-shift="+0.015, +0.015"></div>
+	<div class="parallax-layer" data-image="img/layer2.png" data-shift="+0.030, +0.030"></div>
+	<div class="parallax-layer" data-image="img/layer1.png" data-shift="+0.045, +0.045"></div>
+	<div class="parallax-layer" data-shift="-0.1, -0.1"></div>
+	<div class="parallax-layer" data-shift="+0.02, +0.02"></div>
+	<div class="parallax-layer" data-shift="-0.08, +0.04"></div>
+</div>
+
+<div class="fake-layer fake-layer-1"></div>
+<div class="fake-layer fake-layer-2"></div>
+<div class="fake-layer fake-layer-3"></div>
+
+<script src="https://cdn.jsdelivr.net/tetragon.js/0.1.13/tetragon.base.min.js"></script>
+<script src="https://cdn.jsdelivr.net/tetragon.js/0.1.13/tetragon.animation.min.js"></script>
+<script src="parallax.js"></script>
+<script>
+
+var externalLayers = [
+	document.querySelector('.fake-layer-1'),
+	document.querySelector('.fake-layer-2'),
+	document.querySelector('.fake-layer-3'),
+];
+
+var parallax = new Parallax({
+	element: document.querySelector('.parallax-container'),
+	noWebGL: false, // use WebGL if supported
+	draw: function (rects, viewport) {
+		var center = viewport.mult(0.5);
+
+		// use fake layers to move external layers
+		externalLayers.forEach(function (element, i) {
+			var layer = rects[rects.length - i - 1].center;
+ 			var offset = layer.sub(center);
+			var x = offset.x;
+			var y = offset.y;
+			var translate = 'translate3d(' + x + 'px, ' + y + 'px, 0)';
+
+			element.style.webkitTransform = translate;
+			element.style.mozTransform = translate;
+			element.style.msTransform = translate;
+			element.style.oTransform = translate;
+			element.style.transform = translate;
+		});
+	},
+});
+
+</script>
+
+</body>
+</html>
